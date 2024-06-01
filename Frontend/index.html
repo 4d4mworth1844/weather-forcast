@@ -47,11 +47,13 @@
                 <div class="subscription mt-3 p-3 border border-danger rounded bg-light">
                     <label class="subscribe-label" for="email-subscription">Subscription</label>
                     <div class="input-group mb-3 mt-2">
-                        <input type="text" class="form-control" id="email-subscription" aria-describedby="basic-addon3"
-                            placeholder="Enter your email...">
+                        <input type="text" class="form-control" id="email-subscription" aria-describedby="basic-addon3" placeholder="Enter your email...">
                     </div>
-                    <button class="btn btn-success">Subscribe</button>
-                    <button class="btn btn-danger">Unsubscribe</button>
+                    <div class="input-group mb-3 mt-2">
+                        <input type="text" class="form-control" id="city-subscription" aria-describedby="basic-addon3" placeholder="Enter your city...">
+                    </div>
+                    <button class="btn btn-success" id="subscribe-button">Subscribe</button>
+                    <button class="btn btn-danger" id="unsubscribe-button">Unsubscribe</button>
                 </div>
             </div>
 
@@ -61,7 +63,7 @@
                 <div class="container-fluid mb-4">
                     <div class="main-status container-fluid mb-4 bg-primary text-white rounded" id="weather-info" style="display: none;">
                         <div class="row p-2">
-                            <div class="col-9 border border-success">
+                            <div class="col-9">
                                 <h2><span id="location"></span></h2>
                                 <p>Temperature: <span id="temperature"></span> °C</p>
                                 <p>Wind Speed: <span id="wind_speed"></span> m/s</p>
@@ -77,77 +79,19 @@
                     </div>
                 </div>
             
-                <!--Forecast of the next 4 days-->
+                <!--Forecast of the next n days-->
                 
                 <div class="container-fluid mb-4">
                     <h5 class="mb-4" id="forecast-title"></h5>
                     <div class="row" id="forecast-list">
-                        <!-- Forecast cards will be appended here -->
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#search-button').click(function() {
-                const city = $('#city-search').val();
-                getWeather(city);
-            });
-    
-            $('#current-location-button').click(function() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        getWeather(`${lat},${lon}`);
-                    });
-                } else {
-                    alert('Geolocation is not supported by this browser.');
-                }
-            });
-    
-            function getWeather(location) {
-                console.log('Fetching weather for:', location);
-                $.get(`http://127.0.0.1:8000/weather_app/weather/${location}/`, function(data) {
-                    console.log('Weather data received:', data);
-                    $('#location').text(data.current.location + ' (' + data.forecast[0]["date"] + ')');
-                    $('#weather-icon').attr('src', data.current.icon);
-                    $('#temperature').text(data.current.temperature);
-                    $('#wind_speed').text(data.current.wind_speed.toFixed(2));
-                    $('#humidity').text(data.current.humidity);
-                    $('#condition').text(data.current.condition);
-                    $('#icon').show(); 
-                    $('#weather-info').show();  
-                    
-                    var totalDay = data.forecast.length; 
-                    $('#forecast-title').text(totalDay + "-Day Forecast")
-                    $('#forecast-list').empty();
-                    data.forecast.forEach(function(day) {
-                        $('#forecast-list').append(`
-                            <div class="col-md-3">
-                                <div class="card mb-3 bg-secondary text-white">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${day.date}</h5>
-                                        <img src="${day.icon}" alt="Weather icon" />
-                                        <p class="card-text">Temp: ${day.temperature} °C</p>
-                                        <p class="card-text">Wind: ${day.wind_speed.toFixed(2)} m/s</p>
-                                        <p class="card-text">Humidity: ${day.humidity}%</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                    });
-                }).fail(function(xhr, status, error) {
-                    console.error('Error fetching weather data:', error);
-                    console.error('Status:', status);
-                    console.error('XHR:', xhr);
-                    alert('Error retrieving weather data');
-                });
-            }
-        });
-    </script>
+    <script src="scripts/script.js"></script>
 </body>
 
 </html>

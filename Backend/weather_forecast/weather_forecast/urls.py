@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('weather_app/', include('weather_api.urls')), # Weather forecast route
+    path('email/', include('email_subscribe.urls')),
 ]

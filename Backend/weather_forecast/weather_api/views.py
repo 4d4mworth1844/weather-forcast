@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -46,5 +46,5 @@ class WeatherAPIView(APIView):
             return Response(weather_data, status=status.HTTP_200_OK)
         
         return Response({'error': 'Cannot find data'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
 
